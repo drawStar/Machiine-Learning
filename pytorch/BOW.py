@@ -6,12 +6,12 @@ import torch.optim as optim
 
 
 """
-BOW词袋模型，二分类任务
+BOW词袋模型
 the BOW vector is [Count(word1),Count(word2),Count(word3)...]
 the output is logSoftmax(Ax+b)
 首先建立词典，为给语料库中的每个word分配一个ID；
 统计每句话的词频，建立BoW vector，计算logprob=logSoftmax(Ax+b)；
-转换target的int类型，计算损失函数NLLLoss（-\sum｛y logprob｝，公式网上有）
+转换target的int类型，计算损失函数NLLLoss，公式官方文档有）
 反向传播。。。
 """
 data = [("me gusta comer en la cafeteria".split(), "SPANISH"),
@@ -65,7 +65,7 @@ def make_target(label, label_to_id):
 
 model = BowClassifier(NUM_LABELS, VOCAB_SIZE)
 
-# NLLoss的target只有一个是1，本例是二分类，不是0就是1，但如果做多分类，make_target()函数要改下
+# NLLLossd（input,target）input为（N，C）C为类别总数，具体看官方文档
 loss_function = nn.NLLLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.1)
 
@@ -77,7 +77,6 @@ def train():
             model.zero_grad()
             bow_vec = makeBowVector(sentence, word_to_id)
             target = make_target(label, label_to_id)
-
             log_probs = model(bow_vec)
             loss = loss_function(log_probs, target)
             loss.backward()
