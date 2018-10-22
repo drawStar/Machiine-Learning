@@ -32,6 +32,8 @@ for word in raw_text:
     if word not in word_to_id:
         word_to_id[word] = len(word_to_id)
 
+id_to_word = {v:k for k, v in word_to_id.items()}
+
 VOCAB_SIZE = len(word_to_id)
 CONTEXT_SIZE = 2  # 2 words to the left, 2 to the right
 EMBEDDING_DIM = 10
@@ -79,5 +81,19 @@ def train():
         print(total_loss)
     print("train done")
 
+def test(testcontext):
+    model.eval()
+    with torch.no_grad():
+        context_tensor = make_context_tensor(testcontext, word_to_id)
+        log_probs = model(context_tensor)
+
+        print(log_probs, end='==')  # print 不换行
+        # TODO: 选择log_prob 大的为label
+        print(id_to_word[log_probs.argmax().item()])
+
 train()
+testcontext = ['People','create','to', 'direct']
+test(testcontext)
 #TODO:获取单词的embedding
+
+
