@@ -7,7 +7,7 @@ import torch.optim as optim
 torch.manual_seed(1)
 
 """
-CBOW模型，输入是context的index，获得对应那一行的随机初始化的embedding
+CBOW模型，输入是context的index，获得对应那一行的随机初始化的embedding,再将context embedding做个sum
 最后一层输出的尺寸为vocab_size(即要学习每个word的embedding),label为targetword
 NLLLoss（logprob,target）为损失函数
 """
@@ -41,11 +41,11 @@ class CBOW(nn.Module):
     def __init__(self, vocab_size, embedding_dim, context_size):
         super(CBOW, self).__init__()
         self.embeddings = nn.Embedding(vocab_size, embedding_dim)
-        self.linear1 = nn.Linear(2*context_size*embedding_dim, 128)
+        self.linear1 = nn.Linear(embedding_dim, 128)
         self.linear2 = nn.Linear(128, vocab_size)
     def forward(self, x):
-        # TODO:为什么view((1, -1))?因为embeddings(x)的dim0不是1维的，类似将context的embedding concat
-        embeds = self.embeddings(x).view((1, -1))
+        # TODO:为什么view((1, -1))
+        embeds = sum(self.embeddings(x)).view((1, -1))
         t1 = F.relu(self.linear1(embeds))
         t2 = self.linear2(t1)
         out = F.log_softmax(t2, dim =1)
