@@ -33,7 +33,7 @@ def classify0(input, dataSet, labels, k):
         #字典的get（key, default=None), 返回指定键的值，如值不在字典中返回默认值
 
     #将classCount进行排序
-    soretedclassCount = sorted(classCount.items(),key = lambda x:x[1],reverse = True)
+    soretedclassCount = sorted(classCount.items(), key = lambda x:x[1], reverse = True)
     return soretedclassCount[0][0]
 
 
@@ -49,11 +49,11 @@ def file2matrix(filename):
         listFromLine = line.split('\t')
         returnMat[index, :] = listFromLine[0:3]
         if listFromLine[-1] == 'largeDoses':
-            classLabelVector.append(3)
-        elif listFromLine[-1] == 'smallDoses':
             classLabelVector.append(2)
-        elif listFromLine[-1] == 'didntLike':
+        elif listFromLine[-1] == 'smallDoses':
             classLabelVector.append(1)
+        elif listFromLine[-1] == 'didntLike':
+            classLabelVector.append(0)
         index += 1
     return returnMat, classLabelVector
 def autoNorm(dataSet):
@@ -63,7 +63,7 @@ def autoNorm(dataSet):
     ranges = maxValues - minValues
     normDataSet = np.zeros(dataSet.shape)
     # 因为minValues和maxValues的shape为[1,3]，需要tile
-    normDataSet = dataSet - np.tile(minValues,(dataSet.shape[0], 1))
+    normDataSet = dataSet - np.tile(minValues, (dataSet.shape[0], 1))
     normDataSet = normDataSet/np.tile(ranges, (dataSet.shape[0], 1))
     return normDataSet, ranges, minValues
 def datingClassTest():
@@ -82,21 +82,22 @@ def datingClassTest():
     print("the total error rate is: %f" % (errorCount / float(numTestVecs)))
     print(errorCount)
 
-
-
-
+def classifyPerson():
+    # 手动输入三个特征值，输出与海伦配对的可能性
+    resultList = ['not at all', 'in small does', 'in large does']
+    feature1 = float(input("每周玩游戏时间所占百分比"))
+    feature2 = float(input("每年获得的飞行常客里程数"))
+    feature3 = float(input("每周消费的冰淇淋公升数"))
+    datingDataMat, datingLabels = file2matrix('datingTestSet.txt')
+    normMat, ranges, minVals = autoNorm(datingDataMat)
+    inArr = np.array([feature1, feature2, feature3])
+    classResult = classify0((inArr - minVals)/ranges, normMat, datingLabels, 3)
+    print(resultList[classResult])
 
 
 # group, labels = createDataSet()
 # print(group,labels)
 # print(classify0([0, 0], group, labels, 3))
-# datingDataMat, datingLabels = file2matrix('datingTestSet.txt')
-# print(datingDataMat.shape)
-# norm, ranges, minv = autoNorm(datingDataMat)
-# print(ranges)
-# fig = plt.figure()
-# ax = fig.add_subplot(111)
-# ax.scatter(datingDataMat[:, 1], datingDataMat[:,2], np.array(datingLabels))
-
-datingClassTest()
+# datingClassTest()
+classifyPerson()
 
