@@ -95,9 +95,54 @@ def classifyPerson():
     print(resultList[classResult])
 
 
+def img2vector(filename):
+    # 将 32*32 的二进制图像(实际是32*32的txt文档)转为1*1024的向量
+    returnVector = np.zeros((1, 1024))
+    fr = open(filename)
+    for i in range(32):
+        line = fr.readline()
+        for j in range(32):
+            returnVector[0, 32*i+j] = int(line[j])
+    return returnVector
+
+def handwritingClassTest():
+    hwLabels = []
+    # 获取trainging文件列表
+    trainingFileList = os.listdir('D:/buaa/hang/ml实战/MLiA_SourceCode/machinelearninginaction/Ch02/digits/trainingDigits')
+    m = len(trainingFileList)# 训练样本个数
+    traingMat = np.zeros((m, 1024))
+    for i in range(m):
+        # fileName = trainingFileList[i].split('_')[0]
+        fileName = trainingFileList[i]  # 获取每个文件的名字0_0.txt
+        classNum = int(fileName.split('_')[0])  # 获取类名0-9
+        hwLabels.append(classNum)
+        traingMat[i,:] = img2vector('D:/buaa/hang/ml实战/MLiA_SourceCode/machinelearninginaction/Ch02/digits/trainingDigits/%s' % fileName)
+
+    testFileList = os.listdir('D:/buaa/hang/ml实战/MLiA_SourceCode/machinelearninginaction/Ch02/digits/testDigits')
+    mTest = len(testFileList)# 训练样本个数
+    errorCount = 0.0
+    # testMat = np.zeros((mTest, 1024))
+    for i in range(mTest):
+        fileName = testFileList[i]  # 获取每个文件的名字0_0.txt
+
+        classNum = int(fileName.split('_')[0])  # 获取类名0-9
+        # hwLabels.append(classNum)
+        testVec = img2vector('D:/buaa/hang/ml实战/MLiA_SourceCode/machinelearninginaction/Ch02/digits/testDigits/%s' % fileName)
+        classifierResult = classify0(testVec, traingMat, hwLabels, 3)
+        if (classifierResult != classNum):
+            errorCount += 1
+        print("errorCount=",errorCount,"i=%d /946" % i)
+    print("the total error rate is: %f" % (errorCount / float(mTest)))
+
 # group, labels = createDataSet()
 # print(group,labels)
 # print(classify0([0, 0], group, labels, 3))
 # datingClassTest()
-classifyPerson()
+# classifyPerson()
+
+# mm = img2vector('D:/buaa/hang/ml实战/MLiA_SourceCode/machinelearninginaction/Ch02/digits/testDigits/0_13.txt')
+# print(mm.shape)
+
+handwritingClassTest()
+
 
