@@ -4,8 +4,9 @@ pytorch实现情感分类
 #### Dataset
 
 数据集为yelp数据集，下载后解压到data文件夹
-百度网盘链接：
-链接：https://pan.baidu.com/s/1bpuiqe1Sram0sqGjPNlprA 
+
+
+百度网盘链接：https://pan.baidu.com/s/1bpuiqe1Sram0sqGjPNlprA 
 提取码：sm9f 
 
 #### Abstract
