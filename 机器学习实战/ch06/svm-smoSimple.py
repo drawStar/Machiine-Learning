@@ -83,6 +83,7 @@ def smoSimple(dataMatIn, classLabels, C, toler, epoch):
             yi*f(i) >= 1 and alpha = 0 (outside the boundary)
             yi*f(i) == 1 and 0<alpha< C (on the boundary)
             yi*f(i) <= 1 and alpha = C (between the boundary)
+            https://www.twblogs.net/a/5b7f71952b717767c6afa718
             """
             if((labelMat[i]*Ei < -toler and alphas[i] < C) or (labelMat[i]*Ei>toler and alphas[i] > 0)):
                 # 随机选择另一个与alpha_i成对优化的alpha_j
