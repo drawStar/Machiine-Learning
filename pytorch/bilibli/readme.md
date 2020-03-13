@@ -4,7 +4,9 @@ https://www.bilibili.com/video/av62138405?p=2
 
 https://github.com/ZeweiChu/PyTorch-Course
 
-## pytorch的基本框架，
+## 1-pytorch的基本框架，
+
+熟悉pytorch的基本结构
 
 numpy手写神经网络
 
@@ -14,6 +16,14 @@ pytorch的sequential
 
 pytorch的nn.Module
 
-## fizzbuzz小游戏
+## 2-fizzbuzz小游戏
 
 cuda，crossentropy
+
+## 3 skip-gram-pytorch
+
+统计词频，idx_to_word{}, word_to_id{},
+
+embedding，skip-gram的正负样本采样
+
+Dataloader的用法
