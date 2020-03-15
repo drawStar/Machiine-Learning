@@ -33,7 +33,7 @@ embedding，skip-gram的正负样本采样
 
 Dataloader的用法
 
-## 3 language model
+## 4 language model lstm
 
 数据集链接：https://pan.baidu.com/s/1MSDrT14g64pj4KJ6lqi4Rg 
 提取码：satb
